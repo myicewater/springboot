@@ -51,5 +51,6 @@ public class ScrawPorojectInfo {
 //        ResponseEntity forEntity = restTemplate.getForEntity("http://www.winshangdata.com/wsapi/project/list3_4", String.class, map);
         ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity("http://www.winshangdata.com/wsapi/project/list3_4", httpEntity, String.class);
         System.out.println(stringResponseEntity.getBody());
+
     }
 }

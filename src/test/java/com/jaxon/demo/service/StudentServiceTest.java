@@ -1,0 +1,27 @@
+package com.jaxon.demo.service;
+
+import com.alibaba.fastjson.JSONObject;
+import com.jaxon.demo.entity.Student;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+public class StudentServiceTest {
+
+    @Autowired
+    private StudentService studentService;
+
+
+    public void addStudentTest(){
+        Student student = new Student(501,"Jaxon");
+        studentService.addStudent(student);
+
+
+    }
+
+
+    public void getStudent(){
+        Student student1 = studentService.getStudent(501);
+        System.out.println(JSONObject.toJSONString(student1));
+    }
+}

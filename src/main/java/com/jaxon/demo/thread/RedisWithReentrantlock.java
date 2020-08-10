@@ -1,4 +1,4 @@
-package com.jaxon.demo.redis;
+package com.jaxon.demo.thread;
 
 
 import redis.clients.jedis.Jedis;

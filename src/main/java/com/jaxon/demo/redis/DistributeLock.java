@@ -1,9 +1,11 @@
 package com.jaxon.demo.redis;
 
+import com.alibaba.fastjson.JSONObject;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.params.SetParams;
 
+import java.util.Collections;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -17,7 +19,7 @@ public class DistributeLock {
     private static JedisPool jedisPool ;
 
     static {
-        jedisPool = new JedisPool();
+        jedisPool = new JedisPool("192.168.5.106:6359:4");
     }
 
     public static JedisPool getPool(){
@@ -42,10 +44,11 @@ public class DistributeLock {
 
     public static void unlock(String lockName,String value){
         JedisPool jp = getPool();
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         try(Jedis jedis = jp.getResource()){
-            if(value.equals(jedis.get(lockName))){
-                jedis.del(lockName);
-            }
+            Object result = jedis.eval(script, Collections.singletonList(lockName), Collections.singletonList(value));
+            System.out.println(JSONObject.toJSONString(result));
+
         }
     }
 

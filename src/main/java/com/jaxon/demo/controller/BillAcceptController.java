@@ -38,11 +38,11 @@ public class BillAcceptController {
 
         System.out.println(sb.toString());
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         return "{\"rescode\":0,\"resmsg\":\"成功\"}";
     }

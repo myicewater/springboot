@@ -43,4 +43,6 @@ public class LamdbaTest {
 
 interface Operation{
     int operate(int a ,int b);
+
+
 }

@@ -28,10 +28,15 @@ public class Server {
                         socketChannel.pipeline().addLast(new ServerHandler());
                     }
                 });
-        ChannelFuture cf = b.bind(8888).sync();
-        cf.channel().closeFuture().sync();
-        pGroup.shutdownGracefully();
-        cGroup.shutdownGracefully();
+        try {
+            ChannelFuture cf = b.bind(8888).sync();
+            cf.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            pGroup.shutdownGracefully();
+            cGroup.shutdownGracefully();
+        }
 
     }
 }

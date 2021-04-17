@@ -19,6 +19,7 @@ public class RmqConsumer {
                 super.handleDelivery(consumerTag, envelope, properties, body);
             }
         };
+
         channel.basicConsume(qName,true,consumer);
 
 

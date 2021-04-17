@@ -1,5 +1,6 @@
 package com.jaxon.demo.netty;
 
+import com.alibaba.fastjson.JSONObject;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -23,9 +24,23 @@ public class Client {
         });
 
         ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 8888).syncUninterruptibly();
-        byte[] msg = "客户端发送的消息".getBytes();
-        channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(msg));
-        channelFuture.channel().closeFuture().sync();
-        group.shutdownGracefully();
+
+        Message message = new Message("GET_ID","");
+        String s = JSONObject.toJSONString(message);
+
+        try {
+            while(true){
+                byte[] msg = "给我分配ID".getBytes();
+                channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(msg));
+
+                Thread.sleep(5000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            channelFuture.channel().closeFuture().sync();
+            group.shutdownGracefully();
+        }
+
     }
 }

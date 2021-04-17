@@ -4,7 +4,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+/**
+ * 这是被动处理
+ */
 public class ClientHandler  extends ChannelInboundHandlerAdapter {
+
+
+
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端准备好了");

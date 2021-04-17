@@ -6,12 +6,47 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+
+/**
+ * 这是被动处理
+ */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
+
+    private static Map<ChannelHandlerContext,Integer> connections = new ConcurrentHashMap<ChannelHandlerContext,Integer>();
+    
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("server channel active..");
+    }
+
+    public Integer getServiceId(ChannelHandlerContext ctx){
+
+        if(connections.containsKey(ctx)){
+            return connections.get(ctx);
+        }
+        Collection<Integer> values = connections.values();
+        int result = 0;
+        for(int i=1; i<10;i++){
+            if(!values.contains(i)){
+                final Integer integer = connections.putIfAbsent(ctx, i);
+                result = i;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public void removeServiceId(ChannelHandlerContext ctx){
+        if(connections.containsKey(ctx)){
+            connections.remove(ctx);
+        }
+
     }
 
     @Override
@@ -21,7 +56,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         byteBuf.readBytes(content);
         String con = new String(content,"UTF-8");
         System.out.println("server:"+con);
-        String respons = "返回给客户端相应："+con;
+
+        Integer serviceId = getServiceId(ctx);
+        System.out.println("返回给客户端服务id："+serviceId);
+        String respons = ""+serviceId;
         ctx.writeAndFlush(Unpooled.copiedBuffer(respons.getBytes()));
 
     }
@@ -34,6 +72,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+        System.out.println("链接异常了");
+        removeServiceId(ctx);
         ctx.close();
     }
 }

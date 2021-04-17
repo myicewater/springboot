@@ -2,6 +2,7 @@ package com.jaxon.demo.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,9 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
+//@Scope("prototype")
 public class HelloController {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
+
+    private int a = 0;
+    private static int i = 0;
 
     @ResponseBody
     @RequestMapping("hello")
@@ -21,6 +26,17 @@ public class HelloController {
         int ma = Integer.valueOf(request.getParameter("age"));
         logger.info("年龄：{}",ma);
         logger.info("名称：{}",name);
+
+        try{
+            System.out.println(Thread.currentThread().getId()+" running.");
+            Thread.sleep(5000);
+            System.out.println(Thread.currentThread().getId()+" over.");
+            System.out.println();
+            System.out.println((++a)+"-----"+(++i));
+
+        }catch(Exception e){
+
+        }
 
         return "Hello ";
     }

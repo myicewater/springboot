@@ -11,6 +11,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Client {
 
     public static void main(String[] args) throws InterruptedException {
@@ -24,25 +27,24 @@ public class Client {
             }
         });
 
-        ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 8888).syncUninterruptibly();
+        ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 7098).syncUninterruptibly();
 
         channelFuture.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
                 if(channelFuture.isSuccess()){
-                    try {
-                        while(true){
-                            byte[] msg = "给我分配ID".getBytes();
-                            channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(msg));
 
-                            Thread.sleep(5000);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
+
+                        MsgPro m = new MsgPro();
+                        Map map = new HashMap();
+                        map.put("shopEntityId","1F3FD8MN7FHDE40AB2M1010JKL001AE3");
+                        map.put("mac","BBBB10B6B1B2");
+                        m.setData(map);
+                        channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(JSONObject.toJSONString(m).getBytes()));
+
                         channelFuture.channel().closeFuture().sync();
                         group.shutdownGracefully();
-                    }
+
                 }
             }
         });

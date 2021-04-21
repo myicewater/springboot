@@ -23,7 +23,7 @@ public class ClientHandler  extends ChannelInboundHandlerAdapter {
         byte[] content = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(content);
         String strC = new String(content,"utf-8");
-        System.out.println("client接收到内容："+strC);
+        System.out.println("接收到服务端信息："+strC);
     }
 
     @Override

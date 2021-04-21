@@ -21,6 +21,9 @@ public class StringTest {
     public static void m2(StringBuilder sb ,int colNum, int rowNum ){
         int[][] arr = new int[colNum][rowNum];
 
+        int maxColNum = 0;
+        int maxRowNum = 0;
+
         StringBuilder x = new StringBuilder();
         StringBuilder y = new StringBuilder();
         StringBuilder v = new StringBuilder();

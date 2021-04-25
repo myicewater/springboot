@@ -474,36 +474,40 @@ public class HttpClientUtil
 
 //        String url  ="https://www.facebook.com/";
 //        String url  ="https://www.face456789bo87654ok.com/";
-        String url = "http://192.168.101.13:8080/acceptBill";
-        String msg = "";
-        try {
-            httpPostRequest1(url,"");//httpclient 发起请求
-            msg = "业务处理信息";
-        } catch (UnknownHostException e){
-            msg = e.getMessage();
-            msg += " 未知域名，解析失败";
-            e.printStackTrace();
-        }catch( ConnectTimeoutException e){
-            msg = e.getMessage();
-            msg += " 建立连接超时";
-            e.printStackTrace();
-        }catch (SocketTimeoutException e) {
-            msg = e.getMessage();
-            if(msg != null){
-                if("connect timed out".equals(msg)){//httpclient 不抛出这个异常，抛出ConnectTimeoutException
-                    msg+= " 建立连接超时";
-                }else if("Read timed out".equals(msg)){
-                    msg+= " 接口响应超时";
-                }
-            }
-            e.printStackTrace();
-        }catch (Exception e){
-            msg = e.getMessage();
-            e.printStackTrace();
-        }finally{
-            System.out.println("请求返回结果:"+msg);
-            //处理返回结果
+        String url = "http://sfservice.gooagoo.com/api/dataAnaysis/getNextData.do";
+        while(true){
+            String msg = httpPostRequest1(url,"");
+            System.out.println(msg);
         }
+
+//        try {
+//            httpPostRequest1(url,"");//httpclient 发起请求
+//            msg = "业务处理信息";
+//        } catch (UnknownHostException e){
+//            msg = e.getMessage();
+//            msg += " 未知域名，解析失败";
+//            e.printStackTrace();
+//        }catch( ConnectTimeoutException e){
+//            msg = e.getMessage();
+//            msg += " 建立连接超时";
+//            e.printStackTrace();
+//        }catch (SocketTimeoutException e) {
+//            msg = e.getMessage();
+//            if(msg != null){
+//                if("connect timed out".equals(msg)){//httpclient 不抛出这个异常，抛出ConnectTimeoutException
+//                    msg+= " 建立连接超时";
+//                }else if("Read timed out".equals(msg)){
+//                    msg+= " 接口响应超时";
+//                }
+//            }
+//            e.printStackTrace();
+//        }catch (Exception e){
+//            msg = e.getMessage();
+//            e.printStackTrace();
+//        }finally{
+//            System.out.println("请求返回结果:"+msg);
+//            //处理返回结果
+//        }
     }
 
 }

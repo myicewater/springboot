@@ -5,6 +5,7 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class ZkUtil {
@@ -109,14 +110,22 @@ public class ZkUtil {
         });
 
         countDown.await();
+        if(zookeeper.exists("/linsssshi",false)== null){
 
-        String s = zookeeper.create("/linsssshi" , "haha".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-        System.out.println("结果"+s);
-
-        while(true){
-
-
+            String s = zookeeper.create("/linsssshi" , "haha".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            System.out.println("结果"+s);
         }
+
+
+        List<String> children = zookeeper.getChildren("/linsssshi", false);
+
+        children.forEach(e-> System.out.println(e));
+
+        byte[] data = zookeeper.getData("/linsssiishi", false, null);
+        System.out.println(new String(data));
+
+        System.out.println(zookeeper.getSessionId());;
+
     }
 
 }

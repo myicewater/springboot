@@ -2,6 +2,8 @@ package com.jaxon.demo.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -60,7 +62,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         Integer serviceId = getServiceId(ctx);
         System.out.println("返回给客户端服务id："+serviceId);
         String respons = ""+serviceId;
-        ctx.writeAndFlush(Unpooled.copiedBuffer(respons.getBytes()));
+        ChannelFuture channelFuture = ctx.writeAndFlush(Unpooled.copiedBuffer(respons.getBytes()));
+        channelFuture.isSuccess();
 
     }
 

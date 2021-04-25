@@ -30,6 +30,7 @@ public class Server {
                 });
         try {
             ChannelFuture cf = b.bind(8888).sync();
+
             cf.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

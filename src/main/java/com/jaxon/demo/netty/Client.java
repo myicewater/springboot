@@ -13,6 +13,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Client {
 
@@ -27,27 +28,39 @@ public class Client {
             }
         });
 
-        ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 7098).syncUninterruptibly();
+        for(int i=0;i<100;i++){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ChannelFuture channelFuture = bootstrap.connect("192.168.9.211", 7098).syncUninterruptibly();
+                    channelFuture.addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if(channelFuture.isSuccess()){
 
-        channelFuture.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                if(channelFuture.isSuccess()){
 
+                                MsgPro m = new MsgPro();
+                                Map map = new HashMap();
+                                map.put("shopEntityId","1F3FD8MN7FHDE40AB2M1010JKL001AE3");
+                                map.put("mac", UUID.randomUUID().toString().replaceAll("-","").toUpperCase());
+                                m.setData(map);
+                                m.setOperCode("DEVICE_AUTH");
+                                channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(JSONObject.toJSONString(m).getBytes()));
 
-                        MsgPro m = new MsgPro();
-                        Map map = new HashMap();
-                        map.put("shopEntityId","1F3FD8MN7FHDE40AB2M1010JKL001AE3");
-                        map.put("mac","BBBB10B6B1B2");
-                        m.setData(map);
-                        channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(JSONObject.toJSONString(m).getBytes()));
+                            }
+                        }
+                    });
 
+                    try {
                         channelFuture.channel().closeFuture().sync();
-                        group.shutdownGracefully();
-
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //group.shutdownGracefully();//关闭线程池并释放所有资源
                 }
-            }
-        });
+            }).start();
+
+        }
 
 
 

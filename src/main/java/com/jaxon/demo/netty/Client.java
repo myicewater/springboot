@@ -28,11 +28,11 @@ public class Client {
             }
         });
 
-        for(int i=0;i<100;i++){
+        for(int i=0;i<5;i++){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ChannelFuture channelFuture = bootstrap.connect("192.168.9.211", 7098).syncUninterruptibly();
+                    ChannelFuture channelFuture = bootstrap.connect("tcpsdrmall.dev.goago.cn", 10112).syncUninterruptibly();
                     channelFuture.addListener(new ChannelFutureListener() {
                         @Override
                         public void operationComplete(ChannelFuture channelFuture) throws Exception {

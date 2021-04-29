@@ -32,6 +32,8 @@ public class ClientHandler  extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+        System.out.println("断开连接了、1");
         ctx.close();
     }
 }

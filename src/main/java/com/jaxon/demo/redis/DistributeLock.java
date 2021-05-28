@@ -19,7 +19,7 @@ public class DistributeLock {
     private static JedisPool jedisPool ;
 
     static {
-        jedisPool = new JedisPool("192.168.5.106:6359:4");
+        jedisPool = new JedisPool("192.168.5.106",6379);
     }
 
     public static JedisPool getPool(){
